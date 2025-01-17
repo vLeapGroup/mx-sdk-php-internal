@@ -14,8 +14,8 @@ final class Account implements IEntity
         public Address $address,
         public int $nonce,
         public BigInteger $balance,
-        public int $txCount,
         public int $shard,
+        public ?int $txCount = null,
         public ?string $username = null,
         public ?string $rootHash = null,
     ) {
@@ -24,7 +24,7 @@ final class Account implements IEntity
     protected static function transformResponse(array $res): array
     {
         return array_merge($res, [
-            'address' => Address::fromBech32($res['address']),
+            'address' => Address::newFromBech32($res['address']),
             'balance' => BigInteger::of($res['balance'] ?? 0)
         ]);
     }
