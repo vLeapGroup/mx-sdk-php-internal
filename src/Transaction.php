@@ -11,7 +11,7 @@ class Transaction implements ISignable
     const VERSION_DEFAULT = 1;
     const OPTIONS_DEFAULT = 0;
 
-    public ?Signature $signature = null;
+    public ?string $signature = null;
 
     public function __construct(
         public int $nonce,
@@ -55,7 +55,7 @@ class Transaction implements ISignable
         ];
     }
 
-    public function applySignature(Signature $signature): void
+    public function applySignature(string $signature): void
     {
         $this->signature = $signature;
     }

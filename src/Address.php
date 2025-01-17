@@ -7,9 +7,10 @@ use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\decode;
 use function BitWasp\Bech32\encode;
 use InvalidArgumentException;
+use MultiversX\Interfaces\IAddress;
 use Throwable;
 
-class Address
+class Address implements IAddress
 {
     const DEFAULT_HRP = 'erd';
     const CONTRACT_HEX_PUBKEY_PREFIX = '0000000000000000';
@@ -34,18 +35,26 @@ class Address
         );
     }
 
-    public static function newFromBech32(string $address): Address
+    public static function newFromBech32(string $address, bool $allowCustomHrp = true): Address
     {
         if (strlen($address) !== self::BECH32_ADDRESS_LENGTH) {
             throw new Exception('invalid address length');
         }
 
-        [$hrp, $decoded] = decode(strtolower($address));
-        $res = convertBits($decoded, count($decoded), 5, 8, false);
-        $pieces = array_map(fn ($bits) => dechex($bits), $res);
-        $hex = array_reduce($pieces, fn ($carry, $hex) => $carry . str_pad($hex, 2, "0", STR_PAD_LEFT));
+        try {
+            [$hrp, $decoded] = decode(strtolower($address));
+            if (!$allowCustomHrp && $hrp !== self::DEFAULT_HRP) {
+                throw new Exception("invalid hrp: expected {self::DEFAULT_HRP}, got {$hrp}");
+            }
 
-        return new Address($hex, $hrp);
+            $res = convertBits($decoded, count($decoded), 5, 8, false);
+            $pieces = array_map(fn ($bits) => dechex($bits), $res);
+            $hex = array_reduce($pieces, fn ($carry, $hex) => $carry . str_pad($hex, 2, "0", STR_PAD_LEFT));
+
+            return new Address($hex, $hrp);
+        } catch (Throwable $e) {
+            throw new Exception("cannot create address from {$address}: {$e->getMessage()}");
+        }
     }
 
     public static function newFromBase64(string $value, string $hrp = self::DEFAULT_HRP): Address
@@ -71,9 +80,14 @@ class Address
         return encode($this->hrp, convertBits($bits, count($bits), 8, 5));
     }
 
-    public function getPublicKey(): PublicKey
+    public function getPublicKey(): string
     {
-        return new PublicKey($this->valueHex);
+        return hex2bin($this->valueHex);
+    }
+
+    public function getHrp(): string
+    {
+        return $this->hrp;
     }
 
     public function isSmartContract(): bool
@@ -81,17 +95,9 @@ class Address
         return str_starts_with($this->valueHex, self::CONTRACT_HEX_PUBKEY_PREFIX);
     }
 
-    /**
-     * @deprecated Use {@link isSmartContract} instead.
-     */
-    public function isContractAddress(): bool
+    public function isEmpty(): bool
     {
-        return $this->isSmartContract();
-    }
-
-    public function isZero(): bool
-    {
-        return $this->valueHex === Address::zero($this->hrp)->valueHex;
+        return empty($this->valueHex);
     }
 
     public function equals(?Address $other): bool
@@ -101,7 +107,7 @@ class Address
             : false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->bech32();
     }
@@ -115,12 +121,11 @@ class Address
     {
         try {
             $decoded = decode($address);
-
             [$hrp, $data] = $decoded;
             $pubkey = convertBits($data, count($data), 5, 8, false);
 
             return $hrp === self::DEFAULT_HRP && count($pubkey) === self::PUBKEY_LENGTH;
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             return false;
         }
     }
@@ -138,7 +143,7 @@ class Address
      */
     public static function fromBech32(string $address): Address
     {
-        return self::newFromBech32($address);
+        return self::newFromBech32($address, false);
     }
 
     /**

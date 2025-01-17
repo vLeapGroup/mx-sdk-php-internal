@@ -15,7 +15,7 @@ it('fromBase64ToBigInteger - decodes base64 encoded integers', function ($base64
     ['LBKkOIqYlAAA', '813000000000000000000'],
 ]);
 
-it('bchexdec - decodes a hex encoded bignumber', function ($hex, $val) {
+it('bchexdec - decodes a hex encoded BigInteger', function ($hex, $val) {
     expect((string) Decoder::bchexdec($hex))->toBe($val);
 })->with([
     ['015af1d78b58c40000', '25000000000000000000'],

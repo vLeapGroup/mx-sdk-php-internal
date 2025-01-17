@@ -2,11 +2,10 @@
 
 namespace MultiversX\Interfaces;
 
-use MultiversX\Signature;
 
 interface ISignable
 {
     public function serializeForSigning(): string;
 
-    public function applySignature(Signature $signature): void;
+    public function applySignature(string $signature): void;
 }
