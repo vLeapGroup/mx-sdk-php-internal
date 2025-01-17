@@ -3,8 +3,9 @@
 namespace MultiversX\SmartContracts\Codec;
 
 use MultiversX\Errors\ErrCodec;
-use MultiversX\SmartContracts\Typesystem\OptionValue;
 use MultiversX\SmartContracts\Typesystem\Types\Type;
+use MultiversX\SmartContracts\Typesystem\OptionValue;
+use MultiversX\SmartContracts\Typesystem\Types\OptionType;
 
 /**
  * Encodes and decodes "OptionValue" objects
@@ -35,7 +36,7 @@ class OptionValueBinaryCodec implements ICodec
     public function decodeTopLevel(string $buffer, Type $type): OptionValue
     {
         if (strlen($buffer) === 0) {
-            return new OptionValue($type);
+            return new OptionValue(new OptionType($type));
         }
 
         if (ord($buffer[0]) !== 0x01) {
@@ -43,7 +44,7 @@ class OptionValueBinaryCodec implements ICodec
         }
 
         [$decoded, $_decodedLength] = $this->binaryCodec->decodeNested(substr($buffer, 1), $type);
-        return new OptionValue($type, $decoded);
+        return new OptionValue(new OptionType($type), $decoded);
     }
 
     public function encodeNested(OptionValue $optionValue): string

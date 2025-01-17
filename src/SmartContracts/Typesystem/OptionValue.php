@@ -11,7 +11,7 @@ class OptionValue extends TypedValue
     public const ClassName = "OptionValue";
 
     public function __construct(
-        mixed $type,
+        OptionType $type,
         private readonly ?TypedValue $value = null
     ) {
         parent::__construct($type);
