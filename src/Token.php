@@ -2,11 +2,14 @@
 
 namespace MultiversX;
 
+use Brick\Math\BigInteger;
+
 class Token
 {
     public function __construct(
-        public readonly string $identifier,
-        public readonly int $nonce = 0,
+        public string $identifier,
+        public ?BigInteger $nonce = null,
     ) {
+        $this->nonce = $nonce ?? BigInteger::zero();
     }
 }

@@ -15,7 +15,7 @@ class TokenTransfer
     public static function newFromEgldAmount(BigInteger $amount): self
     {
         $token = new Token(
-            identifier: Constants::EGLD_TOKEN_ID
+            identifier: Constants::EGLD_TOKEN_ID,
         );
 
         return new self(
@@ -31,6 +31,6 @@ class TokenTransfer
 
     public function isFungible(): bool
     {
-        return $this->token->nonce === 0;
+        return $this->token->nonce->isZero();
     }
 }

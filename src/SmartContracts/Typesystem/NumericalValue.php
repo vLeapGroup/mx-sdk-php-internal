@@ -16,7 +16,7 @@ class NumericalValue extends PrimitiveValue
     public ?int $sizeInBytes;
     public bool $withSign;
 
-    public function __construct(NumericalType $type, int|BigInteger $value)
+    public function __construct(NumericalType $type, string|int|BigInteger $value)
     {
         parent::__construct($type);
 
