@@ -3,6 +3,8 @@
 namespace MultiversX\SmartContracts\Typesystem;
 
 use MultiversX\Errors\TypingSystemError;
+use MultiversX\SmartContracts\Typesystem\Field;
+use MultiversX\SmartContracts\Typesystem\Types\FieldDefinition;
 
 
 class Fields
