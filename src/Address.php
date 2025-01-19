@@ -129,28 +129,4 @@ class Address implements IAddress
             return false;
         }
     }
-
-    /**
-     * @deprecated Use {@link newFromHex} instead.
-     */
-    public static function fromHex(string $value, string $hrp = self::DEFAULT_HRP): Address
-    {
-        return self::newFromHex($value, $hrp);
-    }
-
-    /**
-     * @deprecated Use {@link newFromBech32} instead.
-     */
-    public static function fromBech32(string $address): Address
-    {
-        return self::newFromBech32($address, false);
-    }
-
-    /**
-     * @deprecated Use {@link newFromBase64} instead.
-     */
-    public static function fromBase64(string $value, string $hrp = self::DEFAULT_HRP): Address
-    {
-        return self::newFromBase64($value, $hrp);
-    }
 }
