@@ -4,6 +4,7 @@ namespace MultiversX\SmartContracts\Typesystem;
 
 use MultiversX\Errors\MissingFieldOnEnumError;
 use MultiversX\SmartContracts\Typesystem\Types\EnumType;
+use MultiversX\SmartContracts\Typesystem\Types\EnumVariantDefinition;
 
 class EnumValue extends TypedValue
 {

@@ -2,9 +2,8 @@
 
 namespace MultiversX\SmartContracts\Typesystem\Types;
 
-use MultiversX\SmartContracts\Typesystem\EnumVariantDefinition;
-use MultiversX\SmartContracts\Utils\Guard;
 use MultiversX\Utils\Guards;
+use MultiversX\SmartContracts\Typesystem\Types\EnumVariantDefinition;
 
 class EnumType extends CustomType
 {
