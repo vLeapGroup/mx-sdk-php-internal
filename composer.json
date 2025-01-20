@@ -1,5 +1,5 @@
 {
-  "name": "multiversx/mx-sdk-php",
+  "name": "vleap/mx-sdk-php-internal",
   "description": "MultiversX PHP SDK for interacting with the MultiversX blockchain (in general) and Smart Contracts (in particular).",
   "scripts": {
     "test": "vendor/bin/pest",
