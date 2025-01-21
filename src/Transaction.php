@@ -51,7 +51,7 @@ class Transaction implements ISignable
             'chainID' => $this->chainID,
             'version' => $this->version,
             'options' => $this->options === 0 ? null : $this->options,
-            'signature' => $this->signature?->hex(),
+            'signature' => $this->signature,
         ];
     }
 
