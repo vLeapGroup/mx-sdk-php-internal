@@ -2,8 +2,9 @@
 
 namespace MultiversX;
 
-use MultiversX\Utils\Encoder;
 use MultiversX\Address;
+use MultiversX\TokenTransfer;
+use MultiversX\Utils\Encoder;
 
 final class TransactionPayload
 {
@@ -26,8 +27,8 @@ final class TransactionPayload
     public static function contractCallWithEsdtPayment(TokenTransfer $payment, string $funcName, array $args): TransactionPayload
     {
         $data = collect(['ESDTTransfer'])
-            ->push(Encoder::toHex($payment->tokenId))
-            ->push(Encoder::toHex($payment->amountAsBigInteger))
+            ->push(Encoder::toHex($payment->token->identifier))
+            ->push(Encoder::toHex($payment->amount))
             ->push(Encoder::toHex($funcName))
             ->push(...collect($args)->map(fn ($arg) => Encoder::toHex($arg))->all())
             ->filter()
