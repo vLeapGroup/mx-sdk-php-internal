@@ -5,14 +5,19 @@ use MultiversX\Address;
 it('should create address', function () {
     $aliceBech32 = "erd1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssycr6th";
     $bobBech32 = "erd1spyavw0956vq68xj8y4tenjpq2wd5a9p2c6j8gsz7ztyrnpxrruqzu66jx";
+    $charlieBech32 = "vibe10zm4zg6kdnywkdvyz4fct0qzwfdr6ha8kfz5d8sqhaqnwpe5ezvshdnkkw";
+
     $aliceHex = "0139472eff6886771a982f3083da5d421f24c29181e63888228dc81ca60d69e1";
     $bobHex = "8049d639e5a6980d1cd2392abcce41029cda74a1563523a202f09641cc2618f8";
+    $charlieHex = "78b75123566cc8eb3584155385bc02725a3d5fa7b245469e00bf41370734c899";
 
     expect(Address::newFromBech32($aliceBech32)->hex())->toBe($aliceHex);
     expect(Address::newFromBech32($bobBech32)->hex())->toBe($bobHex);
+    expect(Address::newFromBech32($charlieBech32)->hex())->toBe($charlieHex);
 
     expect(Address::newFromHex($aliceHex)->hex())->toBe($aliceHex);
     expect(Address::newFromHex($bobHex)->hex())->toBe($bobHex);
+    expect(Address::newFromHex($charlieHex)->hex())->toBe($charlieHex);
 });
 
 it('should create address with custom hrp', function () {
@@ -61,8 +66,10 @@ it('should throw error when invalid input', function () {
     expect(fn() => Address::newFromBech32("xerd1l453hd0gt5gzdp7czpuall8ggt2dcv5zwmfdf3sd3lguxseux2fsmsgldz"))->toThrow(Exception::class);
 });
 
-it('should validate the address without throwing the error', function () {
+it('should validate an address', function () {
     expect(Address::isValid("erd1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssycr6th"))->toBeTrue();
+    expect(Address::isValid("vibe10zm4zg6kdnywkdvyz4fct0qzwfdr6ha8kfz5d8sqhaqnwpe5ezvshdnkkw"))->toBeTrue();
+
     expect(Address::isValid("xerd1l453hd0gt5gzdp7czpuall8ggt2dcv5zwmfdf3sd3lguxseux2fsmsgldz"))->toBeFalse();
     expect(Address::isValid("erd1l453hd0gt5gzdp7czpuall8ggt2dcv5zwmfdf3sd3lguxseux2"))->toBeFalse();
 });

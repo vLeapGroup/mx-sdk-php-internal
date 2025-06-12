@@ -14,7 +14,6 @@ class Address implements IAddress
 {
     const DEFAULT_HRP = 'erd';
     const CONTRACT_HEX_PUBKEY_PREFIX = '0000000000000000';
-    const BECH32_ADDRESS_LENGTH = 62;
     const PUBKEY_LENGTH = 32;
 
     private function __construct(
@@ -35,17 +34,10 @@ class Address implements IAddress
         );
     }
 
-    public static function newFromBech32(string $address, bool $allowCustomHrp = true): Address
+    public static function newFromBech32(string $address): Address
     {
-        if (strlen($address) !== self::BECH32_ADDRESS_LENGTH) {
-            throw new Exception('invalid address length');
-        }
-
         try {
             [$hrp, $decoded] = decode(strtolower($address));
-            if (!$allowCustomHrp && $hrp !== self::DEFAULT_HRP) {
-                throw new Exception("invalid hrp: expected {self::DEFAULT_HRP}, got {$hrp}");
-            }
 
             $res = convertBits($decoded, count($decoded), 5, 8, false);
             $pieces = array_map(fn ($bits) => dechex($bits), $res);
@@ -124,7 +116,7 @@ class Address implements IAddress
             [$hrp, $data] = $decoded;
             $pubkey = convertBits($data, count($data), 5, 8, false);
 
-            return $hrp === self::DEFAULT_HRP && count($pubkey) === self::PUBKEY_LENGTH;
+            return count($pubkey) === self::PUBKEY_LENGTH;
         } catch (Throwable) {
             return false;
         }
