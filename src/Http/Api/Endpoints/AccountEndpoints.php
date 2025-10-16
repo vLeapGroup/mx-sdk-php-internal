@@ -103,4 +103,13 @@ class AccountEndpoints
             collection: true,
         );
     }
+
+    public function delegation(string $address, array $params = []): Delegation
+    {
+        return Delegation::fromApiResponse(
+            $this->client->request('GET', "accounts/{$address}/delegation", [
+                'query' => $params,
+            ]),
+        );
+    }
 }
