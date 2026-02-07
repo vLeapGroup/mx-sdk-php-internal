@@ -22,7 +22,7 @@
     "bitwasp/bech32": "^0.0.1",
     "brick/math": "^0.12",
     "kornrunner/keccak": "^1.1",
-    "illuminate/collections": "^10.0 || ^11.0",
+    "illuminate/collections": "^10.0 || ^11.0 || ^12.0",
     "guzzlehttp/guzzle": "^7.5",
     "nesbot/carbon": "^2.66 || ^3.2"
   },
