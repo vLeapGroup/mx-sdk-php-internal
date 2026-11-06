@@ -14,10 +14,9 @@ it('creates a client', function () {
 });
 
 it('mocks an error response', function () {
-    $error = new RequestException(
-        'Some error message',
+    $error = RequestException::create(
         new Request('GET', '/endpoint'),
-        new Response(403, [], 'Forbidden')
+        new Response(403, [], 'Forbidden'),
     );
 
     $client = ClientFactory::mockError($error);
